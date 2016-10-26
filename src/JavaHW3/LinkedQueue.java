@@ -6,8 +6,8 @@ import java.util.Arrays;
  * Created by vrom911 on 10/24/16.
  */
 public class LinkedQueue extends AbstractQueue{
-    private Node head;
-    private Node tail;
+    private static Node head;
+    private static Node tail;
 
     private class Node {
         private Object val;
@@ -38,12 +38,11 @@ public class LinkedQueue extends AbstractQueue{
             tail = tail.next;
         }
         size++;
-
     }
     public Node element() {
         return this.head;
     }
-    public Object dequeueSpec() {
+    protected Object dequeueSpec() {
         Object el = head.val;
         head = head.next;
         size--;
@@ -56,6 +55,34 @@ public class LinkedQueue extends AbstractQueue{
         size = 0;
         head = tail = null;
     }
+    public void push(Object el) {
+        Node newHead = new Node(el, null);
+        if (isEmpty()) {
+            head = tail = newHead;
+        } else {
+            newHead.next = head;
+            head = newHead;
+        }
+        size++;
+    }
+    public Object peek() {
+        return isEmpty() ? null : tail.val;
+    }
+    protected Object removeSpec() {
+        Node el = head;
+        for(int i = 0; i < size; i++, el = el.next) {
+            if (el.next.equals(tail)) {
+                el.next = null;
+                tail = el;
+                size--;
+                break;
+            }
+        }
+        if (isEmpty()) {
+            head = null;
+        }
+        return el;
+    }
     public Object[] getArray() {
         Object[] ar = new Object[size];
         Node el = head;
@@ -67,4 +94,3 @@ public class LinkedQueue extends AbstractQueue{
     }
 
 }
-

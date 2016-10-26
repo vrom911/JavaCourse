@@ -5,14 +5,14 @@ package JavaHW3;
  */
 public abstract class AbstractQueue implements Queue {
     protected int size;
-    public abstract Object dequeueSpec();
-
+    protected abstract Object dequeueSpec();
+    protected abstract Object removeSpec();
 
     public Object dequeue() {
-        if (isEmpty()) {
-            return null;
-        }
-        return dequeueSpec();
+        return isEmpty() ? null : dequeueSpec();
+    }
+    public Object remove() {
+        return isEmpty() ? null : removeSpec();
     }
 
     protected boolean isEmpty() {
@@ -21,5 +21,4 @@ public abstract class AbstractQueue implements Queue {
     public int size() {
         return size;
     }
-
 }
