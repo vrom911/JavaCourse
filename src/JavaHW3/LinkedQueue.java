@@ -1,6 +1,8 @@
 package JavaHW3;
 
 import java.util.Arrays;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Created by vrom911 on 10/24/16.
@@ -39,9 +41,11 @@ public class LinkedQueue extends AbstractQueue{
         }
         size++;
     }
-    public Node element() {
-        return this.head;
+
+    public Node elementSpec() {
+        return head;
     }
+
     protected Object dequeueSpec() {
         Object el = head.val;
         head = head.next;
@@ -55,6 +59,7 @@ public class LinkedQueue extends AbstractQueue{
         size = 0;
         head = tail = null;
     }
+
     public void push(Object el) {
         Node newHead = new Node(el, null);
         if (isEmpty()) {
@@ -65,9 +70,11 @@ public class LinkedQueue extends AbstractQueue{
         }
         size++;
     }
-    public Object peek() {
-        return isEmpty() ? null : tail.val;
+
+    protected Object peekSpec() {
+        return tail.val;
     }
+
     protected Object removeSpec() {
         Node el = head;
         for(int i = 0; i < size; i++, el = el.next) {
@@ -83,6 +90,25 @@ public class LinkedQueue extends AbstractQueue{
         }
         return el;
     }
+
+    public Queue filterSpec(Predicate<Object> pr) {
+        LinkedQueue newLQ = new LinkedQueue();
+        for (Node el = head; el != null; el = el.next){
+            if (pr.test(el.val)) {
+                newLQ.enqueue(el.val);
+            }
+        }
+        return newLQ;
+    }
+
+    public LinkedQueue mapSpec(Function<Object, Object> f) {
+        LinkedQueue newL = new LinkedQueue();
+        for(Node el = head; el != null; el = el.next) {
+            newL.enqueue(f.apply(el.val));
+        }
+        return newL;
+    }
+
     public Object[] getArray() {
         Object[] ar = new Object[size];
         Node el = head;

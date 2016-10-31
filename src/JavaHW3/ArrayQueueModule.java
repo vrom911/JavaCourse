@@ -18,6 +18,7 @@ public class ArrayQueueModule {
                 "m = " + Arrays.toString(m) + ", size = " + size() + ", head = " + head + ", tail = " + tail +
                 '}';
     }
+
     public static void enqueue(Object el) {
         checkAdd();
         m[tail] = el;
@@ -25,6 +26,7 @@ public class ArrayQueueModule {
         size++;
 //        System.out.println(size() + "++" + m.length);
     }
+
     public static Object element() {
         return m[head];
     }

@@ -1,5 +1,8 @@
 package JavaHW3;
 
+import java.util.function.Function;
+import java.util.function.Predicate;
+
 /**
  * Created by vrom911 on 10/24/16.
  */
@@ -20,4 +23,9 @@ public interface Queue {
     Object peek();
     /** Remove the tail element from the Queue */
     Object remove();
+    /** создать очередь, содержащую элементы, удовлетворяющие предикату */
+    Queue filter(Predicate<Object> pr);
+    /** создать очередь, содержащую результаты применения функции */
+    Queue map(Function<Object, Object> f);
+
 }
