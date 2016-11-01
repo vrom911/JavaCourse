@@ -91,22 +91,22 @@ public class LinkedQueue extends AbstractQueue{
         return el;
     }
 
-    public Queue filterSpec(Predicate<Object> pr) {
-        LinkedQueue newLQ = new LinkedQueue();
-        for (Node el = head; el != null; el = el.next){
-            if (pr.test(el.val)) {
-                newLQ.enqueue(el.val);
-            }
-        }
-        return newLQ;
+    public Queue filter(Predicate<Object> pr) {
+        return createNewLinkedQueue(pr, x -> x);
     }
 
-    public LinkedQueue mapSpec(Function<Object, Object> f) {
-        LinkedQueue newL = new LinkedQueue();
+    public Queue map(Function<Object, Object> f) {
+        return createNewLinkedQueue(x -> true, f);
+    }
+
+    public Queue createNewLinkedQueue(Predicate<Object> pr, Function<Object, Object> f) {
+        LinkedQueue newA = new LinkedQueue();
         for(Node el = head; el != null; el = el.next) {
-            newL.enqueue(f.apply(el.val));
+            if (pr.test(el.val)) {
+                newA.enqueue(f.apply(el.val));
+            }
         }
-        return newL;
+        return newA;
     }
 
     public Object[] getArray() {

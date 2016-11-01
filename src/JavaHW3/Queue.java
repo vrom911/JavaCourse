@@ -23,9 +23,9 @@ public interface Queue {
     Object peek();
     /** Remove the tail element from the Queue */
     Object remove();
-    /** создать очередь, содержащую элементы, удовлетворяющие предикату */
+    /** @return  queue with filtered elements */
     Queue filter(Predicate<Object> pr);
-    /** создать очередь, содержащую результаты применения функции */
+    /** @return queue of elements of function results */
     Queue map(Function<Object, Object> f);
 
 }

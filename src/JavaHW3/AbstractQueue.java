@@ -12,8 +12,6 @@ public abstract class AbstractQueue implements Queue {
     protected abstract Object removeSpec();
     protected abstract Object elementSpec();
     protected abstract Object peekSpec();
-    protected abstract Queue filterSpec(Predicate<Object> pr);
-    protected abstract Queue mapSpec(Function<Object, Object> f);
 
     public Object dequeue() {
         return isEmpty() ? null : dequeueSpec();
@@ -31,13 +29,13 @@ public abstract class AbstractQueue implements Queue {
         return isEmpty() ? null : peekSpec();
     }
 
-    public Queue filter(Predicate<Object> pr) {
-        return isEmpty() ? null : filterSpec(pr);
-    }
-
-    public Queue map(Function<Object, Object> f) {
-        return isEmpty() ? null : mapSpec(f);
-    }
+//    public Queue filter(Predicate<Object> pr) {
+//        return isEmpty() ? null : filterSpec(pr);
+//    }
+//
+//    public Queue map(Function<Object, Object> f) {
+//        return isEmpty() ? null : mapSpec(f);
+//    }
 
     protected boolean isEmpty() {
         return size == 0;

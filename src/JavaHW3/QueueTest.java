@@ -25,6 +25,12 @@ public class QueueTest {
 
     @Test
     public void testArrayQueuePredicate() throws Exception {
+        ArrayQueue newAq = new ArrayQueue();
+        ArrayQueue filteredAq = (ArrayQueue) newAq.filter(p);
+    }
+
+    @Test
+    public void testArrayQueueFilterEmpty() throws Exception {
         assertTrue("Not Queue", basicAq instanceof ArrayQueue);
         ArrayQueue newAq = (ArrayQueue) basicAq.filter(p);
         assertEquals("Size of new arrayQueue is not equals expected one", newAq.size(), 11);

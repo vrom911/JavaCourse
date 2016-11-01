@@ -91,20 +91,20 @@ public class ArrayQueue extends AbstractQueue{
         tail = size();
     }
 
-    public Queue filterSpec(Predicate<Object> pr) {
-        ArrayQueue newQueue = new ArrayQueue();
-        for (int i = 0; i < size(); i++) {
-            if (pr.test(m[(head + i) % m.length])) {
-                newQueue.enqueue(m[i]);
-            }
-        }
-        return newQueue;
+    public Queue filter(Predicate<Object> pr) {
+        return createNewArrayQueue(pr, x -> x);
     }
 
-    public Queue mapSpec(Function<Object, Object> f) {
+    public Queue map(Function<Object, Object> f) {
+        return createNewArrayQueue( x -> true, f);
+    }
+
+    public Queue createNewArrayQueue(Predicate<Object> pr, Function<Object, Object> f) {
         ArrayQueue newA = new ArrayQueue();
         for(int i = 0; i < size(); i++) {
-            newA.enqueue(f.apply(m[(head + i) % m.length]));
+            if (pr.test(m[(head + i) % m.length])) {
+                newA.enqueue(f.apply(m[(head + i) % m.length]));
+            }
         }
         return newA;
     }
@@ -115,6 +115,7 @@ public class ArrayQueue extends AbstractQueue{
             newM[i] = m[(head + i) % m.length];
         }
         return newM;
+//        return createArrayQueue(x -> true, x -> x).m;
     }
 
 }
