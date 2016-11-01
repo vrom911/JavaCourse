@@ -6,13 +6,14 @@ package JavaHW4;
 public abstract class BinaryOperation implements Operation{
     public Operation a;
     public Operation b;
-
-    public BinaryOperation(){
-
-    };
+    protected abstract Integer calc(Integer x, Integer y);
 
     public BinaryOperation(Operation a, Operation b) {
         this.a = a;
         this.b = b;
+    }
+
+    public Integer evaluate(Integer val) {
+        return calc(a.evaluate(val), b.evaluate(val));
     }
 }

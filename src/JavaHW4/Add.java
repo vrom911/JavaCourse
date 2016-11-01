@@ -11,7 +11,7 @@ public class Add extends BinaryOperation{
         super(a, b);
     }
 
-    public Integer evaluate(Integer o) {
-        return a.evaluate(o) + b.evaluate(o);
+    protected Integer calc(Integer x, Integer y) {
+        return (x + y);
     }
 }
