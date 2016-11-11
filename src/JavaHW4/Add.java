@@ -1,17 +1,17 @@
 package JavaHW4;
 
-import java.util.function.Function;
-
 /**
  * Created by vrom911 on 10/31/16.
  */
-public class Add extends BinaryOperation{
+class Add extends BinaryOperation{
 
-    public Add (Operation a, Operation b) {
+    Add(TripleOperation a, TripleOperation b) {
         super(a, b);
     }
 
-    protected Integer calc(Integer x, Integer y) {
+    protected Integer calc(Integer x, Integer y) throws OverFlowException {
+        long c = (long) x + y;
+        checkOverflow(c);
         return (x + y);
     }
 }

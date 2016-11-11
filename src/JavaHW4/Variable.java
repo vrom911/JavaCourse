@@ -3,12 +3,23 @@ package JavaHW4;
 /**
  * Created by vrom911 on 10/31/16.
  */
-public class Variable implements Operation {
-    public String name;
-    public Variable(String name) {
-        this.name = name;
+class Variable implements TripleOperation {
+    private String name;
+
+    Variable(String name) {
+        this.name = name.toLowerCase();
     }
-    public Integer evaluate(Integer val) {
-        return val;
+    
+    public Integer evaluate(Integer x, Integer y, Integer z) {
+        switch (name) {
+            case "x":
+                return x;
+            case "y":
+                return y;
+            case "z":
+                return z;
+            default:
+                throw new IllegalArgumentException("Only x, y or z possible");
+        }
     }
 }

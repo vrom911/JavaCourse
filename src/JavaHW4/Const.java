@@ -3,14 +3,14 @@ package JavaHW4;
 /**
  * Created by vrom911 on 10/31/16.
  */
-public class Const implements Operation {
-    public Integer c;
+class Const implements TripleOperation {
+    private Integer c;
 
-    public Const(Integer c) {
+    Const(Integer c) {
         this.c = c;
     }
 
-    public Integer evaluate(Integer o) {
+    public Integer evaluate(Integer x, Integer y, Integer z) {
         return c;
     }
 }
