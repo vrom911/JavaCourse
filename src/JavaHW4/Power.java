@@ -13,7 +13,12 @@ class Power extends BinaryOperation {
         if (y < 0) {
             throw new WrongExpressionException("Negative power");
         }
-        if (y == 0) return 1;
+        if (y == 0) {
+            if (x == 0) {
+                throw new WrongExpressionException("0^0 !!! Be careful.");
+            }
+            return 1;
+        }
         if (y % 2 == 0) {
             int res = calc(x, y / 2);
             return res * res;
