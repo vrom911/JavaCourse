@@ -19,7 +19,7 @@ class Variable implements TripleOperation {
             case "z":
                 return z;
             default:
-                throw new IllegalArgumentException("Only x, y or z possible");
+                throw new IllegalArgumentException("Only x, y or z possible, not " + name);
         }
     }
 }

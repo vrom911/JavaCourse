@@ -4,6 +4,7 @@ package JavaHW4;
  * Created by vrom911 on 11/1/16.
  */
 abstract class BinaryOperation implements TripleOperation{
+
     private TripleOperation a;
     private TripleOperation b;
     protected abstract Integer calc(Integer x, Integer y) throws DivideByZeroException, OverFlowException;
