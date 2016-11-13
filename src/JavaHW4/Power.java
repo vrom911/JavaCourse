@@ -10,15 +10,15 @@ class Power extends BinaryOperation {
     }
 
     public Integer calc(Integer x, Integer y) throws OverFlowException {
-        if (y >= 0) {
-            for (int i = 0; i < y; i++) {
-                x *= x;
-            }
-
-            return (y == 0) ? 1 : x;
-        } else {
+        if (y < 0) {
             throw new WrongExpressionException("Negative power");
         }
-
+        if (y == 0) return 1;
+        if (y % 2 == 0) {
+            int res = calc(x, y / 2);
+            return res * res;
+        } else {
+            return x * calc(x, y - 1);
+        }
     }
 }

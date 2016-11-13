@@ -9,6 +9,7 @@ abstract class ExpressionException extends RuntimeException {
 
     ExpressionException() {
     }
+
     public ExpressionException(String message) {
         super(message);
     }

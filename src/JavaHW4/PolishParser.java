@@ -7,7 +7,7 @@ import java.util.Stack;
  */
 class PolishParser {
     private String originalExp;
-    private Token curToken = new Token(Token.EPS, "$");
+    private Token curToken = new Token(TokenType.EPS, "$");
     private int curPos;
 
     PolishParser(String exp) {
@@ -21,11 +21,11 @@ class PolishParser {
         Stack<TripleOperation> resStack = new Stack<>();
         System.out.println(polishExp);
         for (Token t : polishExp) {
-            if (!(t.token == Token.CONST || t.token == Token.VAR)) {
+            if (!(t.token == TokenType.CONST || t.token == TokenType.VAR)) {
                 TripleOperation right = resStack.pop();
-                if (t.token == Token.UNARY_MINUS) {
+                if (t.token == TokenType.UNARY_MINUS) {
                     result = new UnaryMinus(right);
-                } else if (t.token == Token.UNARY_FUNC) {
+                } else if (t.token == TokenType.UNARY_FUNC) {
                     if (t.value.equals("abs")) {
                         result = new Abs(right);
                     } else if (t.value.equals("sqrt")) {
@@ -34,19 +34,19 @@ class PolishParser {
                 } else {
                     TripleOperation left = resStack.pop();
                     switch (t.token) {
-                        case Token.PLUS:
+                        case PLUS:
                             result = new Add(left, right);
                             break;
-                        case Token.MINUS:
+                        case MINUS:
                             result = new Subtract(left, right);
                             break;
-                        case Token.MULT:
+                        case MULT:
                             result = new Multiply(left, right);
                             break;
-                        case Token.DIV:
+                        case DIV:
                             result = new Divide(left, right);
                             break;
-                        case Token.POW:
+                        case POW:
                             result = new Power(left, right);
                             break;
                     }
@@ -64,20 +64,20 @@ class PolishParser {
         Stack<Token> output = new Stack<>();
         Stack<Token> operators = new Stack<>();
         curToken = getToken();
-        while (curToken.token != Token.EPS) {
-            if (curToken.token == Token.CONST || curToken.token == Token.VAR) {
+        while (curToken.token != TokenType.EPS) {
+            if (curToken.token == TokenType.CONST || curToken.token == TokenType.VAR) {
                 output.push(curToken);
-            } else if (curToken.token == Token.PLUS || curToken.token == Token.MINUS
-                    || curToken.token == Token.MULT || curToken.token == Token.DIV
-                    || curToken.token == Token.POW || curToken.token == Token.UNARY_MINUS
-                    || curToken.token == Token.UNARY_FUNC) {
+            } else if (curToken.token == TokenType.PLUS || curToken.token == TokenType.MINUS
+                    || curToken.token == TokenType.MULT || curToken.token == TokenType.DIV
+                    || curToken.token == TokenType.POW || curToken.token == TokenType.UNARY_MINUS
+                    || curToken.token == TokenType.UNARY_FUNC) {
                 if(!operators.isEmpty()) {
                     if (operators.peek().priority >= curToken.priority ) {
                         operators.push(curToken);
                     } else {
 
                         Token t = operators.peek();
-                        while (t.token != Token.OPEN_BR) {
+                        while (t.token != TokenType.OPEN_BR) {
                             output.push(t);
                             operators.pop();
                             t = operators.peek();
@@ -87,12 +87,12 @@ class PolishParser {
                 } else {
                     operators.push(curToken);
                 }
-            } else if (curToken.token == Token.OPEN_BR) {
+            } else if (curToken.token == TokenType.OPEN_BR) {
                 operators.push(curToken);
-            } else if (curToken.token == Token.CLOSE_BR) {
+            } else if (curToken.token == TokenType.CLOSE_BR) {
                 if (!operators.isEmpty()) {
                     Token t = operators.pop();
-                    while (t.token != Token.OPEN_BR) {
+                    while (t.token != TokenType.OPEN_BR) {
                         output.push(t);
                         if (!operators.isEmpty()) {
                             t = operators.pop();
@@ -108,7 +108,7 @@ class PolishParser {
         }
         while (!operators.isEmpty()) {
             Token p = operators.pop();
-            if (p.token != Token.OPEN_BR) {
+            if (p.token != TokenType.OPEN_BR) {
                 output.push(operators.pop());
             } else {
                 throw new WrongExpressionException();
@@ -138,46 +138,46 @@ class PolishParser {
             if (curPos > beginPos) {
                 String val = originalExp.substring(beginPos, curPos);
                 if (val.equals("x") || val.equals("y") || val.equals("z")) {
-                    curToken = new Token(Token.VAR, val);
+                    curToken = new Token(TokenType.VAR, val);
                 } else if (val.equals("abs") || val.equals("sqrt")) {
-                    curToken = new Token(Token.UNARY_FUNC, val);
+                    curToken = new Token(TokenType.UNARY_FUNC, val);
                 } else if (isDigit(val)) {
-                    curToken = new Token(Token.CONST, originalExp.substring(beginPos, curPos));
+                    curToken = new Token(TokenType.CONST, originalExp.substring(beginPos, curPos));
                 } else {
                     throw new WrongExpressionException();
                 }
             } else {
-                int curOper;
+                TokenType curOper;
                 switch (originalExp.charAt(curPos)) {
                     case '+':
-                        curOper = Token.PLUS;
+                        curOper = TokenType.PLUS;
                         break;
                     case '-':
-                        if (prevToken.token == Token.CLOSE_BR ||
-                                prevToken.token == Token.VAR ||
-                                prevToken.token == Token.CONST) {
-                            curOper = Token.MINUS;
+                        if (prevToken.token == TokenType.CLOSE_BR ||
+                                prevToken.token == TokenType.VAR ||
+                                prevToken.token == TokenType.CONST) {
+                            curOper = TokenType.MINUS;
                         } else {
-                            curOper = Token.UNARY_MINUS;
+                            curOper = TokenType.UNARY_MINUS;
                         }
                         break;
                     case '*':
-                        curOper = Token.MULT;
+                        curOper = TokenType.MULT;
                         break;
                     case '/':
-                        curOper = Token.DIV;
+                        curOper = TokenType.DIV;
                         break;
                     case '(':
-                        curOper = Token.OPEN_BR;
+                        curOper = TokenType.OPEN_BR;
                         break;
                     case ')':
-                        curOper = Token.CLOSE_BR;
+                        curOper = TokenType.CLOSE_BR;
                         break;
                     case '^':
-                        curOper = Token.POW;
+                        curOper = TokenType.POW;
                         break;
                     default:
-                        curOper = Token.EPS;
+                        curOper = TokenType.EPS;
                         break;
                 }
                 curToken = new Token(curOper, Character.toString(originalExp.charAt(curPos)));
@@ -185,11 +185,11 @@ class PolishParser {
             }
             return curToken;
         }
-        return new Token(Token.EPS, "$");
+        return new Token(TokenType.EPS, "$");
     }
 
     private TripleOperation makeConstOrVar(Token t) {
-        return (t.token == Token.CONST) ?
+        return (t.token == TokenType.CONST) ?
                 new Const(Integer.parseInt(t.value)) :
                 new Variable(t.value);
     }

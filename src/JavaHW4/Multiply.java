@@ -11,6 +11,6 @@ class Multiply extends BinaryOperation {
     protected Integer calc(Integer x, Integer y) throws OverFlowException {
         long c = (long) x * y;
         checkOverflow(c);
-        return (x * y);
+        return x * y;
     }
 }

@@ -12,8 +12,6 @@ class Divide extends BinaryOperation {
         if (y == 0) {
             throw new DivideByZeroException();
         }
-        long c = (long) x / y;
-        checkOverflow(c);
-        return (x / y);
+        return x / y;
     }
 }
