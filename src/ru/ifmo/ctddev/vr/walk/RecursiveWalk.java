@@ -1,13 +1,16 @@
-package advanced.homework1;
+package ru.ifmo.ctddev.vr.walk;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/*
+* To run tests from terminal enter:
+* java -cp junit-4.11.jar:hamcrest-core-1.3.jar:WalkTest.jar:./out/production/JavaCourse/ info.kgeorgiy.java.advanced.walk.Tester RecursiveWalk ru.ifmo.ctddev.vr.walk.RecursiveWalk
+ */
 public class RecursiveWalk {
 
     private static final String noFileHash = "00000000000000000000000000000000";
@@ -26,10 +29,11 @@ public class RecursiveWalk {
             MessageDigest md = MessageDigest.getInstance("md5");
             String line;
             while ((line = r.readLine()) != null) {
-                try {
-                    File f = new File(line);
+                File f = new File(line);
+                if (f.exists()) {
                     recursiveWalk(f, w, md);
-                } catch (NoSuchFileException e) {
+                }
+                else {
                     w.println(noFileHash + " " + line);
                 }
             }
