@@ -2,10 +2,15 @@ package advanced.homework1;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class RecursiveWalk {
+
+    private static final String noFileHash = "00000000000000000000000000000000";
 
     public static void main(String[] args) {
         if (args.length < 2) {
@@ -21,8 +26,12 @@ public class RecursiveWalk {
             MessageDigest md = MessageDigest.getInstance("md5");
             String line;
             while ((line = r.readLine()) != null) {
-                File f = new File(line);
-                recursiveWalk(f, w, md);
+                try {
+                    File f = new File(line);
+                    recursiveWalk(f, w, md);
+                } catch (NoSuchFileException e) {
+                    w.println(noFileHash + " " + line);
+                }
             }
         } catch (NoSuchAlgorithmException | IOException e) {
             e.printStackTrace();
@@ -30,14 +39,17 @@ public class RecursiveWalk {
     }
 
     private static void recursiveWalk(File f, PrintWriter w, MessageDigest md) throws NullPointerException, IOException {
-        if (f.isDirectory()) {
-            if (f.listFiles() != null) {
-                for (File subf : f.listFiles()) {
-                    recursiveWalk(subf, w, md);
-                }
-            }
-        } else {
-            w.println((f.exists() ? calcMd5(f, md) : "00000000000000000000000000000000") + " " + f.getPath());
+        Files.walk(Paths.get(f.getPath()))
+                .filter(Files::isRegularFile)
+                .forEach(y -> hashFile(y, w, md));
+    }
+
+    private static void hashFile(Path p, PrintWriter w, MessageDigest md) {
+        File f = new File(String.valueOf(p));
+        try {
+            w.println(calcMd5(f, md) + " " + f.getPath());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
