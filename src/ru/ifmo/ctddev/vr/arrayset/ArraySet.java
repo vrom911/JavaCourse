@@ -24,7 +24,7 @@ public class ArraySet<E> extends AbstractSet<E> implements NavigableSet<E> {
     }
 
     public ArraySet() {
-        this(new ArrayList<>(), new ArraySetComparator<E>());
+        this(new ArrayList<>(), new ArraySetComparator<>());
         this.isDefaultOrder = true;
     }
 
@@ -60,6 +60,10 @@ public class ArraySet<E> extends AbstractSet<E> implements NavigableSet<E> {
             @Override
             public E next() {
                 return iterator.next();
+            }
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
             }
         };
     }
@@ -109,65 +113,53 @@ public class ArraySet<E> extends AbstractSet<E> implements NavigableSet<E> {
 
     @Override
     public E lower(E e) {
-        return helpLowerHigher(this.iterator(), e, 1);
+        int index = Collections.binarySearch(set, e, comparator);
+        if (index == 0 || index == -1) {
+            return null;
+        }
+        return (index > 0) ? set.get(index - 1) : set.get(-index - 2);
     }
 
     @Override
     public E floor(E e) {
-        return helpFloorCeiling(this.iterator(), e, 1);
+        int index = Collections.binarySearch(set, e, comparator);
+
+        if (index == -1) {
+            return null;
+        }
+        return (index >= 0) ? set.get(index) : set.get(-index - 2);
     }
 
     @Override
     public E ceiling(E e) {
-        return helpFloorCeiling(this.descendingIterator(), e, -1);
+        int index = Collections.binarySearch(set, e, comparator);
+
+        if (index == -size() - 1) {
+            return null;
+        }
+        return (index >= 0) ? set.get(index) : set.get(-index - 1);
     }
 
     @Override
     public E higher(E e) {
-        return helpLowerHigher(this.descendingIterator(), e, -1);
-    }
+        int index = Collections.binarySearch(set, e, comparator);
 
-    private E helpLowerHigher(Iterator<E> i, E e, int flag) {
-        E result = null;
-        while (i.hasNext()) {
-            E next = i.next();
-            if (comparator.compare(e, next) == flag) {
-                result = next;
-            } else {
-                return result;
-            }
+        if ((index == -size() - 1) || (index == size() - 1)){
+            return null;
         }
-        return result;
-    }
-
-    private E helpFloorCeiling(Iterator<E> i, E e, int flag) {
-        E result = null;
-        while (i.hasNext()) {
-            E next = i.next();
-            if (comparator.compare(e, next) == flag  || comparator.compare(e, next) == 0) {
-                result = next;
-            } else {
-                return result;
-            }
-        }
-        return result;
+        return (index >= 0) ? set.get(index + 1) : set.get(- index - 1);
     }
 
     @Override
     public NavigableSet<E> subSet(E fromEl, boolean from, E toEl, boolean to) {
-        if (isEmpty() || (comparator.compare(fromEl, toEl) == 0 && !(from && to))) {
-            return new ArraySet<>(new ArrayList<>(), comparator);
-        }
+        
         fromEl = from ? ceiling(fromEl) : higher(fromEl);
         toEl = to ? floor(toEl) : lower(toEl);
-        if ((fromEl == null && !contains(null)) || (toEl == null && !contains(null))) {
+
+        if ((fromEl == null) || (toEl == null) || (set.indexOf(toEl) - set.indexOf(fromEl) < 0)) {
             return new ArraySet<>(new ArrayList<>(), comparator);
         }
-        if (set.indexOf(toEl) - set.indexOf(fromEl) >= 0) {
-            return new ArraySet<>(set.subList(set.indexOf(fromEl), set.indexOf(toEl) + 1), comparator);
-        } else {
-            return new ArraySet<>(new ArrayList<>(), comparator);
-        }
+        return new ArraySet<>(set.subList(set.indexOf(fromEl), set.indexOf(toEl) + 1), comparator);
     }
 
     @Override

@@ -10,6 +10,7 @@ public class Main {
         list.add(2);
         list.add(8);
         list.add(1);
+        list.add(-1);
         list.add(3);
 //        System.out.println(list);
 //        System.out.println(list.subList(4, 5));
@@ -23,14 +24,14 @@ public class Main {
 //        };
         ArraySet<Integer> set = new ArraySet<>(list);
         list.sort(set.comparator());
-        System.out.println(Collections.binarySearch(list, 0, set.comparator()));
+        System.out.println(Collections.binarySearch(list, 1, set.comparator()));
         System.out.println(set);
-        System.out.println(set.subSet(1, false, 5, true));
-        System.out.println(set.tailSet(1, false));
-//        System.out.println(set.first());
-//        System.out.println(set.lower((5)));
-//        System.out.println(set.floor((5)));
-//        System.out.println(set.ceiling((5)));
-//        System.out.println(set.higher((5)));
+        System.out.println(set.subSet(0, true, 1, true));
+//        System.out.println(set.headSet(7, true));
+////        System.out.println(set.first());
+//        System.out.println(set.lower((null)));
+//        System.out.println(set.floor((-7)));
+//        System.out.println(set.ceiling((-1)));
+//        System.out.println(set.higher((null)));
     }
 }
