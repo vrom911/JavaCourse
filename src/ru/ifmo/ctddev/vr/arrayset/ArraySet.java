@@ -6,7 +6,7 @@ import java.util.*;
  */
 public class ArraySet<E extends Comparable<E>> extends AbstractSet<E> implements NavigableSet<E> {
 
-    private final ArrayList<E> set;
+    private final List<E> set;
     private final Comparator<E> comparator;
     private boolean isDefaultOrder = false;
 
@@ -23,8 +23,8 @@ public class ArraySet<E extends Comparable<E>> extends AbstractSet<E> implements
         this.set = temp;
     }
 
-    private ArraySet(Collection<E> set, Comparator<E> comparator, int i) {
-        this.set = new ArrayList<>(set);
+    private ArraySet(List<E> set, Comparator<E> comparator, int i) {
+        this.set = set;
         this.comparator = comparator;
     }
 
