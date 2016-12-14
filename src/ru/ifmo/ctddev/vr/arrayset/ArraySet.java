@@ -175,14 +175,14 @@ public class ArraySet<E extends Comparable<E>> extends AbstractSet<E> implements
 
     @Override
     public NavigableSet<E> subSet(E fromEl, boolean from, E toEl, boolean to) {
+        return this.tailSet(fromEl, from).headSet(toEl, to);
+    }
 
-        int fromElInd = from ? ceilingInd(fromEl) : higherInd(fromEl);
-        int toElInd = to ? floorInd(toEl) : lowerInd(toEl);
-
-        if ((fromElInd < 0) || (toElInd < 0) || (toElInd - fromElInd < 0)) {
+    public NavigableSet<E> subSetIndex(int from, int to) {
+        if ((from < 0) || (to < 0) || (to - from < 0)) {
             return new ArraySet<>(comparator);
         }
-        return new ArraySet<>(set.subList(fromElInd, toElInd + 1), comparator, 1);
+        return new ArraySet<>(set.subList(from, to + 1), comparator, 1);
     }
 
     @Override
@@ -190,7 +190,8 @@ public class ArraySet<E extends Comparable<E>> extends AbstractSet<E> implements
         if (isEmpty()) {
             return new ArraySet<>(comparator);
         }
-        return subSet(first(), true, e, in);
+        int to = in ? floorInd(e) : lowerInd(e);
+        return subSetIndex(0, to);
     }
 
     @Override
@@ -198,7 +199,8 @@ public class ArraySet<E extends Comparable<E>> extends AbstractSet<E> implements
         if (isEmpty()) {
             return new ArraySet<>(comparator);
         }
-        return subSet(e, in, last(), true);
+        int from = in ? ceilingInd(e) : higherInd(e);
+        return subSetIndex(from, size() - 1);
     }
 
     @Override
